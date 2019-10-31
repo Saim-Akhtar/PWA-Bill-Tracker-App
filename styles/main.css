@@ -1,0 +1,70 @@
+body {
+    background-image: url('../images/billing-bg-black.jpg');
+    background-size: cover;
+    /* background-position: center center; */
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+nav {
+    /* background-color: transparent !important; */
+    box-shadow: none !important;
+}
+
+.login-btn {
+    font-weight: bold;
+    box-shadow: 0 0 0 2pt #c62828 !important;
+}
+
+.container-heading {
+    margin-top: 2.1em;
+    font-family: 'Arvo', serif;
+}
+
+.container-heading__span {
+    border-right: 5px solid #c62828;
+    padding-right: 0.1em;
+    
+}
+
+h4{
+    font-family: 'Kurale', serif;
+}
+
+.sub-section h4 {
+    
+    position: relative;
+    line-height: 1.8em;
+}
+
+.sub-section h4:after {
+    content: ' ';
+    position: absolute;
+    display: block;
+    width: 40px;
+    margin: 0 45%;
+    border: 2px solid #d0d0d0;
+    /* border: 5px solid #c62828; */
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
+    -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
+}
+
+.content {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.1em;
+}
+
+.closing{
+    cursor: pointer
+}
+
+
+@media only screen and (max-width: 767px) {
+    body {
+        background-image: url('../images/billing-bg.jpg');
+    }
+}

@@ -1,0 +1,47 @@
+.form-box{
+    position: relative;
+    max-height: 40em !important;
+    overflow: hidden;
+    padding: 0.1em 0;
+    border-radius: 5px;
+    background-image: linear-gradient(-45deg, rgb(236, 78, 78) ,rgb(245, 130, 130)) !important;
+}
+
+.login-form,.signup-form{
+    position: relative;
+    padding: 0 1em !important;
+}
+
+
+.login-form__email,.login-form__password,.signup-form__email,.signup-form__password{
+    border-radius: 5px;
+    margin: 2em 0 !important
+}
+#loginEmail,#loginPassword,#signupEmail,#signupPassword{    
+    border: none !important;
+    box-shadow: none !important;
+}
+input::placeholder{
+    color: rgb(170, 163, 163);
+}
+
+.login-form{
+    opacity: 1;
+    transition: all 0.5s ease-in-out;
+}
+
+.signup-form{
+    opacity: 0;
+    top: 0em !important;
+    transition: all 0.5s ease-in-out;
+}
+.hide-login{
+    opacity: 0;
+}
+
+.show-signup{
+    opacity: 1;
+    top: -26em !important;
+    
+}
+
