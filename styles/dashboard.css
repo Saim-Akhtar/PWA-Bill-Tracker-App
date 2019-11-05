@@ -2,12 +2,12 @@ html{
     scroll-behavior: smooth;
 }
 
-header, main, footer {
-    padding-left: 300px !important;
+body {
+    padding-right: 300px !important;
   }
 
   @media only screen and (max-width : 992px) {
-    header, main, footer {
-      padding-left: 0;
+    body {
+      padding-right: 0 !important;
     }
   }

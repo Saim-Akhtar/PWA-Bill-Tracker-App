@@ -2,12 +2,14 @@ const db=firebase.firestore()
 const billCards=document.getElementById('bill-cards')
 const downloadBtn=document.getElementById('downloadBtn')
 const addBill_form=document.querySelector('#addModal form')
+const updateBill_form=document.querySelector('#updateModal form')
+let billUpdateKey
+
 let userID
 let userEmail
 let username
 let userKey
 let userDoc
-
 
 // Save AS Excel File Using Sheets JS on button click
 const saveTableAsExcel=()=>{
@@ -111,17 +113,6 @@ const drawChart=()=>{
     });
 }
 
-
-
-const displayNoBills=()=>{
-    const noBillsHeading=document.createElement('h4')
-    noBillsHeading.classList.add('white-text','center')
-    noBillsHeading.innerHTML='No Bills'
-    const billCards_container=billCards.parentElement
-    billCards_container.innerHTML=''
-    billCards_container.appendChild(noBillsHeading)
-}
-
                 //-------------- Managing Data In Firestore --------------------//
 
 // Delete Bill from Firestore
@@ -132,30 +123,92 @@ const deleteBill=(element)=>{
 }
 
 // Adding Bills in Collections of user
-const addBillInCollection=(bill)=>{
-    console.log(bill)
-    userDoc.collection('bills').add(bill) //adding in firestore user bill collection
-}
+const addBillInCollection=(form)=>{
 
-// function used to get data of Bill from FORM
-addBill_form.addEventListener('submit',(e)=>{
-    e.preventDefault()
-    const form=e.target
     const billTitle=form['title-bill'].value
     const billCurrency=form['currency-bill'].value
     const billAmount= form['amount-bill'].value
     const billDueDate=form['dueDate-bill'].value
     const billPaidCheck=form['paidCheck-bill'].checked === true ? "Paid": "UnPaid"
-    addBillInCollection({billTitle,billCurrency,billAmount,billDueDate,billPaidCheck})
+    
+    const bill={billTitle,billCurrency,billAmount,billDueDate,billPaidCheck}
+    //adding in firestore user bill collection
+    userDoc.collection('bills').add(bill) 
+
     form.reset()
     $('#addModal').modal('close')
+}
+// function used to get data of Bill from Add FORM
+addBill_form.addEventListener('submit',(e)=>{
+    e.preventDefault()
+    addBillInCollection(e.target)
 })
+
+// Updating Bill in Collection of user
+const updateBillInCollection=(form)=>{
+    
+    const billTitle=form['title-bill-edit'].value
+    const billCurrency=form['currency-bill-edit'].value
+    const billAmount= form['amount-bill-edit'].value
+    const billDueDate=form['dueDate-bill-edit'].value
+    const billPaidCheck=form['paidCheck-bill-edit'].checked === true ? "Paid": "UnPaid"
+    
+    const bill={billTitle,billCurrency,billAmount,billDueDate,billPaidCheck}
+    //updating in firestore user bill collection
+    userDoc.collection('bills').doc(billUpdateKey).update(bill) 
+    
+    form.reset()
+    billUpdateKey=null
+    $('#updateModal').modal('close')
+}
+
+// function used to get data of Bill from Update FORM
+updateBill_form.addEventListener('submit',(e)=>{
+    e.preventDefault()
+    updateBillInCollection(e.target)
+})
+
 
         // -------------Manipulation of DOM on each event in database ------------ //
 
+// Display Bill Details to update
+const displayForUpdate=(element)=>{
+    const dataID=element.getAttribute('data-target')
+    billUpdateKey=dataID
+
+    const bill_card=document.querySelector(`[data-id=bill${dataID}]`)
+    
+    const oldTitle=bill_card.querySelector('.bill-title').innerHTML
+    const oldCurrency=bill_card.querySelector('.bill-currency').innerHTML
+    const oldAmount=bill_card.querySelector('.bill-amount').innerHTML
+    const oldDueDate=bill_card.querySelector('.bill-dueDate').innerHTML
+    const oldPaidCheck=bill_card.querySelector('.bill-paid').innerHTML
+
+    updateBill_form['title-bill-edit'].value=oldTitle
+    updateBill_form['currency-bill-edit'].value=oldCurrency
+    updateBill_form['amount-bill-edit'].value=oldAmount
+    updateBill_form['dueDate-bill-edit'].value=oldDueDate
+    oldPaidCheck === 'Paid' ? 
+    updateBill_form['paidCheck-bill-edit'].checked = true:updateBill_form['paidCheck-bill-edit'].checked = false 
+    
+    $('#updateModal').modal('open')
+}
+
+// Update Bill On Page
+const updateBillCard=(bill)=>{
+    const bill_card=document.querySelector(`[data-id=bill${bill.id}]`)   
+    
+    bill_card.querySelector('.bill-title').innerHTML=bill.data().billTitle
+    bill_card.querySelector('.bill-amount').innerHTML=bill.data().billAmount
+    bill_card.querySelector('.bill-dueDate').innerHTML=bill.data().billDueDate
+    bill_card.querySelector('.bill-paid').innerHTML=bill.data().billPaidCheck
+    bill_card.querySelector('.bill-currency').innerHTML=bill.data().billCurrency
+}
+
+
 // Remove Delete Bills from Page
 const removeBillCard=(bill)=>{
-    const bill_card=document.querySelector(`[data-id=${bill.id}]`)    
+    const bill_card=document.querySelector(`[data-id=bill${bill.id}]`)   
     billCards.removeChild(bill_card)
 }
 
@@ -164,7 +217,7 @@ const displayBillCard=(bill)=>{
     const card=document.createElement('div')
     card.classList.add('col','s6','m4')
     
-    card.setAttribute('data-id',bill.id)
+    card.setAttribute('data-id','bill'+bill.id)
     card.innerHTML=`
     
                   <div class="card blue-grey darken-1">
@@ -183,7 +236,7 @@ const displayBillCard=(bill)=>{
                       <p class="bill-currency hide">${bill.data().billCurrency}</p>
                     </div>
                     <div class="card-action">
-                      <a class="btn btn-small green" onClick="display(this)" data-target="${bill.id}" href="JavaScript:void(0)">Edit</a>
+                      <a class="btn btn-small green" onClick="displayForUpdate(this)" data-target="${bill.id}" href="JavaScript:void(0)">Edit</a>
                       <a class="btn btn-small red" onClick="deleteBill(this)" data-target="${bill.id}" href="JavaScript:void(0)">Remove</a>
                     </div>
                   </div>
@@ -194,39 +247,39 @@ const displayBillCard=(bill)=>{
     // billCards.appendChild(card)
 }
 
-
-
-const display=(event)=>{
-    
-    const dataID=event.getAttribute('data-target')
-    console.log(dataID)
+const displayNoBills=()=>{
+    const noBillsHeading=document.createElement('h4')
+    noBillsHeading.classList.add('white-text','center')
+    noBillsHeading.innerHTML='No Bills'
+    // const billCards_container=billCards.parentElement
+    downloadBtn.classList.add('hide')
+    billCards.appendChild(noBillsHeading)
 }
-
-
 
 
 const realTimeBills=async(userDoc)=>{
     
     userDoc.collection('bills').onSnapshot(snapshot => {
-        
+        if(snapshot.empty){
+            console.log('No Bills Added yet')
+            displayNoBills() 
+        }
+        else{
+            billCards.innerHTML=''
+            downloadBtn.classList.remove('hide')
+        }
         snapshot.docChanges().forEach(change => {
-    
             
-
             if (change.type == 'added') {
                 displayBillCard(change.doc)
             } else if (change.type == 'removed') {
                 removeBillCard(change.doc)
             } else if (change.type == 'modified') {
-                console.log('updated')
+                updateBillCard(change.doc)
             }
-            drawChart()
         })
-        if(snapshot.empty){
-            console.log('No Bills Added yet')
-            displayNoBills()
-            return 
-        }
+        
+        drawChart()
         
     })
     
