@@ -6,7 +6,7 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Bill Tracker</title>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-
+    <link rel="shortcut icon" href="./images/icons/icon-512x512.png">
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -21,6 +21,18 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Arvo|Josefin+Sans|Kurale|Roboto&display=swap" rel="stylesheet">
 
+    <!-- Manifest file link -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- iOS meta tags and icons -->
+
+    <meta name="apple-mobile-web-app-status-bar-style" content="#aa7700">
+
+    <link rel="apple-touch-icon" href="/images/icons/icon-96x96.png">
+
+
+    <meta name="theme-color" content="#E99A9A">
+    
 
 <!-- The core Firebase JS SDK is always required and must be listed first -->
 <script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-app.js"></script>
@@ -120,6 +132,7 @@ $(document).ready(function(){
             });
   });
 </script>
+<script src="/scripts/sw-navigator.js"></script>
 <script src="/scripts/ui-design.js"></script>
 <script src="/scripts/materialize.min.js"></script>
 

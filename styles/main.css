@@ -42,7 +42,7 @@ h4{
     position: absolute;
     display: block;
     width: 40px;
-    margin: 0 45%;
+    margin: 0 46%;
     border: 2px solid #d0d0d0;
     /* border: 5px solid #c62828; */
     border-radius: 4px;
@@ -66,5 +66,12 @@ h4{
 @media only screen and (max-width: 767px) {
     body {
         background-image: url('../images/billing-bg.jpg');
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .sub-section h4:after {
+        
+        margin: 0 42%;
     }
 }
